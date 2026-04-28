@@ -46,7 +46,7 @@ def index():
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/registration', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -63,7 +63,7 @@ def register():
         finally:
             conn.close()
 
-    return render_template('register.html')
+    return render_template('registration.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
