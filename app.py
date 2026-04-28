@@ -125,12 +125,18 @@ def view_note(note_id):
         return redirect(url_for('login'))
 
     conn = get_db_connection()
-    note = conn.execute('SELECT * FROM notes WHERE id = ?', (note_id,)).fetchone()
+    note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
     conn.close()
 
     if note is None:
         return 'Note not found', 404
     return render_template('view_note.html', note=note)
+
+# Vulnerability, A01:2021 – Broken Access Control
+
+#To fix change to:
+# note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
+# return 'Access denied', 403
 
 @app.route('/delete-note/<int:note_id>', methods=['POST'])
 def delete_note(note_id):
@@ -143,6 +149,18 @@ def delete_note(note_id):
     conn.close()
 
     return redirect(url_for('dashboard'))
+
+# Also here is the same vulnerability, A01:2021 – Broken Access Control
+
+#To fix change to:
+
+# note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
+# if note is None:
+#        conn.close()
+#        return 'Access denied', 403
+
+# conn.execute('DELETE FROM notes WHERE id = ? AND user_id = ?',
+#              (note_id, session['user_id']))
 
 @app.route('/logout')
 def logout():
