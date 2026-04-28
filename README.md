@@ -32,3 +32,15 @@ https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.
 and
 
 https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L157-163
+
+### Vulnerability 2
+
+#### A06:2021 - Vulnerable and Outdated Components
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/poetry.lock#L190
+
+Here we can find a vulnerability by using an old Werkzeug version that has been classified as high risk by https://security.snyk.io/package/pip/werkzeug.
+
+The fix is to change the version to a more recent, safe one:
+
+`version = "3.1.8"` and then running `poetry update`
