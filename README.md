@@ -26,6 +26,8 @@ https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.
 
 A vulnerability for broken access control is the lack of inspecting whether a user owns a note or not. Before, any user was able to view and delete another user's notes simply by guessing the id of the note. The fix checks whether a user is the owner of the note.
 
+In the screenshots we can see that both users alice and heips both see the same notes that are originally made by Alice. In the after photo when heips tries to access the note, their access is denied since the owner is Alice.
+
 Appropriate fix would be to uncomment:
 https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L138-139
 
