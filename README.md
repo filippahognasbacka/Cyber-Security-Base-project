@@ -24,20 +24,22 @@ https://python-poetry.org/docs/#installation
 
 #### A01:2021 – Broken Access Control
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L128
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L167
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L147
+and
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L187
 
 A vulnerability for broken access control is the lack of inspecting whether a user owns a note or not. Before, any user was able to view and delete another user's notes simply by guessing the id of the note. The fix checks whether a user is the owner of the note.
 
 In the screenshots we can see that both users alice and heips both see the same notes that are originally made by Alice. In the after photo when heips tries to access the note, their access is denied since the owner is Alice.
 
 Appropriate fix would be to uncomment:
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L138-139
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L168-171
 
 and
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L157-163
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L189-195
 
 ### Vulnerability 2
 
@@ -60,7 +62,7 @@ The after screenshots show that the Werkzeug warnings disappear after changing t
 
 #### A02:2021 – Cryptographic Failures
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L66-67
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L91-92
 
 Here a serious vulnerability is storing the password as itself without hashing it. Incase attackers would have access to the database they would immediately get access to all users passwords.
 
@@ -68,7 +70,8 @@ In the screenshot we can see that this is possible in terminal by first doing `s
 
 The fix is to use a default hashing by for example Werkzeug library which prolongs cracking of individual passwords.
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L52-55
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L55
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L88-95
 
 In the screenshots we first see a list of users and their passwords but after making the changes and deleting the old database and making a new user, we can now see the password for the user is hashed.
 
@@ -76,15 +79,14 @@ In the screenshots we first see a list of users and their passwords but after ma
 
 #### A07:2021 – Identification and Authentication Failures
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L81-82
-
 Here we can see that the vulnerability is that the page does not have any requirements for a users password. This is a major risk for brute force attacks since attackers can easily try out the most common / simple passwords like "1".
 
 The fix has requirements that the password must be at least 8 characters, contain at least one of each: uppercase letter, number and special character. This makes it more difficult for attackers to get access to users accounts.
 
 Below are the fixes:
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L62-84
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L63-72
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L83-85
 
 
 ### Vulnerability 5

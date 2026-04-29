@@ -51,11 +51,9 @@ def index():
 
 #Vulnerability 3, A02:2021 – Cryptographic Failures
 
-#To fix change to:
+#To fix uncomment comments down below and add this import:
 #from werkzeug.security import generate_password_hash, check_password_hash
-#password_hash = generate_password_hash(password)
-#conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
-#            (username, password_hash))
+
 
 
 #Vulnerability 4, A07:2021 – Identification and Authentication Failures
@@ -73,7 +71,7 @@ def index():
 #        return False, "Password must contain special character"
 #    return True, "OK"
 
-#and uncomment three lines down below:
+#and uncomment commented lines down below:
 
 @app.route('/registration', methods=['GET', 'POST'])
 def register():
@@ -81,15 +79,20 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-
+          #Vulnerability 4
 #        is_valid, message = validate_password_strength(password)
 #        if not is_valid:
 #            return message, 400
 
         conn = get_db_connection()
+        #Vulnerability 3
+        #password_hash = generate_password_hash(password)
         try:
             conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
             (username, password))
+            #Also vulnerability 3
+            #conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
+#            (username, password_hash))
             conn.commit()
             return redirect(url_for('login'))
         except sqlite3.IntegrityError:
@@ -148,11 +151,15 @@ def add_note():
         conn.commit()
         conn.close()
 
-        print(f"[DEBUG] User {session['username']} created note at {datetime.now()}")  # VULNERABLE
+        print(f"[DEBUG] User {session['username']} created note at {datetime.now()}")
 
         return redirect(url_for('dashboard'))
 
     return render_template('add_note.html')
+
+# Vulnerability 1, A01:2021 – Broken Access Control
+
+#To fix change below to:
 
 @app.route('/note/<int:note_id>')
 def view_note(note_id):
@@ -160,18 +167,19 @@ def view_note(note_id):
         return redirect(url_for('login'))
 
     conn = get_db_connection()
-    note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
-    conn.close()
+    note = conn.execute('SELECT * FROM notes WHERE id = ?', (note_id,)).fetchone()
+    # note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
+    #conn.close()
+#     if note is None:
+#         return 'Access denied or Note not found', 403
 
+    conn.close()
     if note is None:
         return 'Note not found', 404
     return render_template('view_note.html', note=note)
 
-# Vulnerability, A01:2021 – Broken Access Control
-
+# Also here below is the same vulnerability, A01:2021 – Broken Access Control
 #To fix change to:
-# note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
-# return 'Access denied', 403
 
 @app.route('/delete-note/<int:note_id>', methods=['POST'])
 def delete_note(note_id):
@@ -180,22 +188,19 @@ def delete_note(note_id):
 
     conn = get_db_connection()
     conn.execute('DELETE FROM notes WHERE id = ?', (note_id,))
-    conn.commit()
-    conn.close()
 
-    return redirect(url_for('dashboard'))
-
-# Also here is the same vulnerability, A01:2021 – Broken Access Control
-
-#To fix change to:
-
-# note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
+    # note = conn.execute('SELECT * FROM notes WHERE id = ? AND user_id = ?', (note_id, session['user_id'])).fetchone()
 # if note is None:
 #        conn.close()
 #        return 'Access denied', 403
 
 # conn.execute('DELETE FROM notes WHERE id = ? AND user_id = ?',
 #              (note_id, session['user_id']))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('dashboard'))
 
 @app.route('/logout')
 def logout():
