@@ -80,3 +80,17 @@ The fix has requirements that the password must be at least 8 characters, contai
 Below are the fixes:
 
 https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L62-84
+
+
+### Vulnerability 5
+
+#### A03:2021 – Injection
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/templates/dashboard.html#L18
+
+The vulnerability here is Cross-site Scripting (XSS). This is done by using the `| safe` filter in the Jinja2 template. This way, the application is instructed to trust user input and render the note's content as raw HTML. This is a major vulnerability since it allows attackers to inject JavaScript code into the application.
+
+The fix is to remove the "safe" part of the filter. By doing that Flask's Jinja2 template automatically escapes HTML and the malicious script is not executed but instead shown as plain text in the note.
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/templates/dashboard.html#L21
+

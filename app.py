@@ -3,6 +3,9 @@ import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
+# Vulnerability 5, A05:2021 – Security Misconfiguration
+# A fix would be to change below to:
+# app.secret_key = os.environ.get("SECRET_KEY", os.urandom(32))
 app.secret_key = 'super-secret-key-12345'
 
 DATABASE = 'app.db'
