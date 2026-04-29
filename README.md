@@ -24,7 +24,7 @@ https://python-poetry.org/docs/#installation
 
 #### A01:2021 – Broken Access Control
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L167
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L170
 
 and
 
