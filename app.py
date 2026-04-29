@@ -46,6 +46,15 @@ def index():
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
+#Vulnerability, A02:2021 – Cryptographic Failures
+
+#To fix change to:
+from werkzeug.security import generate_password_hash, check_password_hash
+#password_hash = generate_password_hash(password)
+#conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
+#            (username, password_hash))
+
+
 @app.route('/registration', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -53,9 +62,10 @@ def register():
         password = request.form['password']
 
         conn = get_db_connection()
+        password_hash = generate_password_hash(password)
         try:
             conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
-                        (username, password))
+            (username, password_hash))
             conn.commit()
             return redirect(url_for('login'))
         except sqlite3.IntegrityError:
@@ -74,7 +84,7 @@ def login():
         user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
 
-        if user and user['password'] == password:
+        if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
 

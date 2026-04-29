@@ -1,20 +1,24 @@
 # Cyber Security Base project
 
+A simple note app where users can write, add and delete notes.
+
 ### Startup Instructions:
 
-1. Install Poetry in case you haven't already following these instructions:
+1. Start by cloning the repository to a directory
+
+2. Install Poetry in case you haven't already following these instructions:
 https://python-poetry.org/docs/#installation
 
-2. Install dependencies by doing: `poetry install`
+3. Install dependencies by doing `poetry install`
 
-3. Activate the virtual environment with: `poetry shell`
+4. Activate the virtual environment with `poetry shell`
 
-4. Run Flask application with: `flask run`
+5. Run Flask application with `flask run`
 
-5. Access the application in your web browser with `http://127.0.0.1:5000`
+6. Access the application in your web browser with `http://127.0.0.1:5000`
 
 
-## OWASP 2021 vulnerabilities:
+## OWASP 2021 5 vulnerabilities:
 
 ### Vulnerability 1
 
@@ -46,3 +50,20 @@ Here we can find a vulnerability by using an old Werkzeug version that has been 
 The fix is to change the version to a more recent, safe one:
 
 `version = "3.1.8"` and then running `poetry update`
+
+### Vulnerability 3
+
+#### A02:2021 – Cryptographic Failures
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L66-67
+
+Here a serious vulnerability is storing the password as itself without hashing it. Incase attackers would have access to the database they would immediately get access to all users passwords.
+
+In the screenshot we can see that this is possible in terminal by first doing `sqlite3 app.db` and then the query `SELECT username, password FROM users;`. By doing this we see a list of all users and their passwords.
+
+The fix is to use a default hashing by for example Werkzeug library which prolongs cracking of individual passwords.
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L52-55
+
+In the screenshots we first see a list of users and their passwords but after making the changes and deleting the old database and making a new user, we can now see the password for the user is hashed.
+
