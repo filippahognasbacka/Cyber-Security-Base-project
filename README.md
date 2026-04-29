@@ -72,3 +72,11 @@ In the screenshots we first see a list of users and their passwords but after ma
 #### A07:2021 – Identification and Authentication Failures
 
 https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L81-82
+
+Here we can see that the vulnerability is that the page does not have any requirements for a users password. This is a major risk for brute force attacks since attackers can easily try out the most common / simple passwords like "1".
+
+The fix has requirements that the password must be at least 8 characters, contain at least one of each: uppercase letter, number and special character. This makes it more difficult for attackers to get access to users accounts.
+
+Below are the fixes:
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L62-84
