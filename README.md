@@ -43,13 +43,18 @@ https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.
 
 #### A06:2021 - Vulnerable and Outdated Components
 
-https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/poetry.lock#L190
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/pyproject.toml#L10-11
 
-Here we can find a vulnerability by using an old Werkzeug version that has been classified as high risk by https://security.snyk.io/package/pip/werkzeug.
+Here we can find a vulnerability by using old flask and Werkzeug versions that has been classified as high risk. We can see this by installing a checker with `pip install pip-audit` and then doing `poetry export -f requirements.txt | pip-audit`.
 
-The fix is to change the version to a more recent, safe one:
+In the before screenshot we can see warnings for the Werkzeug version used.
 
-`version = "3.1.8"` and then running `poetry update`
+The fix is to change the flask version to a more recent, safe one:
+
+`version = "3.1.3"` (The Werkzeug version doesn't need to be specified since Flask installs the latest secure one automatically) and then running `poetry update`
+
+The after screenshots show that the Werkzeug warnings disappear after changing to a newer version of flask and Werkzeug when doing the same command `poetry export -f requirements.txt | pip-audit`.
+
 
 ### Vulnerability 3
 
