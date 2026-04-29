@@ -67,3 +67,8 @@ https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.
 
 In the screenshots we first see a list of users and their passwords but after making the changes and deleting the old database and making a new user, we can now see the password for the user is hashed.
 
+### Vulnerability 4
+
+#### A07:2021 – Identification and Authentication Failures
+
+https://github.com/filippahognasbacka/Cyber-Security-Base-project/blob/main/app.py#L81-82

@@ -46,14 +46,31 @@ def index():
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
-#Vulnerability, A02:2021 – Cryptographic Failures
+#Vulnerability 3, A02:2021 – Cryptographic Failures
 
 #To fix change to:
-from werkzeug.security import generate_password_hash, check_password_hash
+#from werkzeug.security import generate_password_hash, check_password_hash
 #password_hash = generate_password_hash(password)
 #conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
 #            (username, password_hash))
 
+
+#Vulnerability 4, A07:2021 – Identification and Authentication Failures
+
+#To fix add this:
+
+#def validate_password_strength(password):
+#    if len(password) < 8:
+#        return False, "Password must be at least 8 characters"
+#    if not any(c.isupper() for c in password):
+#        return False, "Password must contain uppercase letter"
+#    if not any(c.isdigit() for c in password):
+#        return False, "Password must contain a number"
+#    if not any(c in '!@#$%^&*' for c in password):
+#        return False, "Password must contain special character"
+#    return True, "OK"
+
+#and uncomment three lines down below:
 
 @app.route('/registration', methods=['GET', 'POST'])
 def register():
@@ -61,11 +78,15 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
+
+#        is_valid, message = validate_password_strength(password)
+#        if not is_valid:
+#            return message, 400
+
         conn = get_db_connection()
-        password_hash = generate_password_hash(password)
         try:
             conn.execute('INSERT INTO users (username, password) VALUES (?, ?)',
-            (username, password_hash))
+            (username, password))
             conn.commit()
             return redirect(url_for('login'))
         except sqlite3.IntegrityError:
@@ -84,7 +105,7 @@ def login():
         user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
 
-        if user and check_password_hash(user['password'], password):
+        if user and user['password'] == password:
             session['user_id'] = user['id']
             session['username'] = user['username']
 
@@ -93,6 +114,7 @@ def login():
         return 'Invalid username or password', 401
 
     return render_template('login.html')
+
 
 @app.route('/dashboard')
 def dashboard():
