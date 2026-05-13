@@ -51,7 +51,7 @@ def index():
 
 #Vulnerability 3, A02:2021 – Cryptographic Failures
 
-#To fix uncomment comments down below and add this import:
+#To fix uncomment comments down below (lines 88-95 and 115) and add this import:
 #from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -111,6 +111,8 @@ def login():
         user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
 
+        #Vulnerability 3
+        #if user and check_password_hash(user['password'], password):
         if user and user['password'] == password:
             session['user_id'] = user['id']
             session['username'] = user['username']
